@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Jobs.LowLevel.Unsafe;
 
-namespace Emeric {
+namespace Emeric.RandomLibrary {
 
     [UpdateInGroup(typeof(InitializationSystemGroup))] //This ensures that this system will be setup before any other that might use it.
     public partial class RandomSystem : SystemBase

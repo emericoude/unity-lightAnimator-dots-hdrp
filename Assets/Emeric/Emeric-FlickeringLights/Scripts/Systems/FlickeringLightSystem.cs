@@ -2,6 +2,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
+using Emeric.RandomLibrary;
 
 namespace Emeric {
 

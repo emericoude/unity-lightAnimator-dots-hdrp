@@ -1035,7 +1035,7 @@ GameObject:
   - component: {fileID: 1416848864}
   - component: {fileID: 1416848863}
   - component: {fileID: 1416848862}
-  - component: {fileID: 1416848861}
+  - component: {fileID: 1416848865}
   m_Layer: 0
   m_Name: Point Light (3)
   m_TagString: Untagged
@@ -1043,47 +1043,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1416848861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416848860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af258205cbb2a094aa8e05bb5fb72b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Presets: 0
-  _previousPreset: 0
-  CustomSetting:
-    TimeRangeBeforeChangingTarget:
-      x: 0
-      y: 0
-    LightIntensityRange:
-      x: 0
-      y: 29.784649
-    LightIntensityChangeStep: 14.06
-    LightIntensityChangeSpeed: 0
-    ChangeTargetTimer: 0
-    SetColor: 1
-    ColorToSet:
-      x: 0
-      y: 0
-      z: 0
-      w: 0
-    TargetIntensity: 10
-    TargetVolume: 1
-  LightIntensityRange: {x: 0, y: 29.784649}
-  LightIntensityChangeStep: 14.06
-  LightIntensityChangeSpeed: 0
-  SetColor: 1
-  ColorToSet: {r: 0, g: 0, b: 0, a: 0}
-  TimeRangeBeforeChangingTarget: {x: 0, y: 0}
-  ChangeTargetTimer: 0
-  TargetIntensity: 10
-  TargetVolume: 1
 --- !u!114 &1416848862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1283,6 +1242,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1416848865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416848860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab873ebc828280c4ca6b6923c82b90e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settingOptions: 2
+  _preset: {fileID: 11400000, guid: 9e6a4ef5bb501444fb21ae7c0f6fa42c, type: 2}
+  _overrides: 127
+  OverrideLightIntensityRange: {x: 0, y: 50}
+  OverrideLightIntensityChangeSpeedRange: {x: 0, y: 500}
+  OverrideLightIntensityChangeSpeed: 0
+  OverrideLightIntensityChangeStep: {x: 0, y: 0}
+  OverrideSetColor: 0
+  OverrideLerpToColor: 0
+  OverrideColorToSet: {r: 0, g: 0, b: 0, a: 0}
+  OverrideTimeRangeBeforeChangingTarget: {x: 0, y: 0}
+  OverrideChangeTargetTimer: 0
+  OverrideTargetIntensity: 0
+  CustomSettings:
+    LightIntensityRange:
+      x: 0
+      y: 0
+    TargetIntensity: 0
+    LightIntensityChangeSpeedRange:
+      x: 0
+      y: 0
+    LightIntensityChangeSpeed: 0
+    LightIntensityChangeStep:
+      x: 0
+      y: 0
+    SetColor: 0
+    LerpToColor: 0
+    ColorToSet:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+    TimeRangeBeforeChangingTarget:
+      x: 0
+      y: 0
+    ChangeTargetTimer: 0
 --- !u!1 &1510366648
 GameObject:
   m_ObjectHideFlags: 0
@@ -1515,7 +1522,7 @@ MonoBehaviour:
       x: 0.5
       y: 0.5
     LightIntensityRange:
-      x: -32.71943
+      x: -27.173912
       y: 15
     LightIntensityChangeStep: 15
     LightIntensityChangeSpeed: 99
@@ -1528,7 +1535,7 @@ MonoBehaviour:
       w: 0
     TargetIntensity: 10
     TargetVolume: 1
-  LightIntensityRange: {x: -32.71943, y: 15}
+  LightIntensityRange: {x: -27.173912, y: 15}
   LightIntensityChangeStep: 15
   LightIntensityChangeSpeed: 99
   SetColor: 1
