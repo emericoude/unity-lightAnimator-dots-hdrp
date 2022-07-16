@@ -10,21 +10,5 @@ namespace Emeric.LightAnimator
     {        
         public IEnumerable<AnimatedLightPreset> Presets { get { return _presets; } }
         [SerializeField] private List<AnimatedLightPreset> _presets;
-        
-        /*
-        [HideInInspector] public static List<string> PresetNames { get; private set; } = new List<string>();
-
-        private void OnValidate()
-        {
-            List<string> presetNames = new List<string>();
-            
-            for (int i = 0; i < Presets.Count; i++)
-            {
-                presetNames.Add(Presets[i].name);
-            }
-
-            PresetNames = presetNames;
-        }
-        */
     }
 }

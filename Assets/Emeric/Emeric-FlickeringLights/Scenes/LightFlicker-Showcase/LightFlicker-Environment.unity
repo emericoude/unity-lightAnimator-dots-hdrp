@@ -1254,42 +1254,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab873ebc828280c4ca6b6923c82b90e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _settingOptions: 2
+  _settingOptions: 0
   _preset: {fileID: 11400000, guid: 9e6a4ef5bb501444fb21ae7c0f6fa42c, type: 2}
-  _overrides: 127
-  OverrideLightIntensityRange: {x: 0, y: 50}
-  OverrideLightIntensityChangeSpeedRange: {x: 0, y: 500}
+  _overrides: 126
+  OverrideLightIntensityRange: {x: 16.452534, y: 40.007137}
+  OverrideLightIntensityChangeSpeedRange: {x: 0, y: 0}
   OverrideLightIntensityChangeSpeed: 0
   OverrideLightIntensityChangeStep: {x: 0, y: 0}
   OverrideSetColor: 0
-  OverrideLerpToColor: 0
+  OverrideLerpToColor: 1
   OverrideColorToSet: {r: 0, g: 0, b: 0, a: 0}
-  OverrideTimeRangeBeforeChangingTarget: {x: 0, y: 0}
+  OverrideTimeRangeBeforeChangingTarget: {x: 0, y: 1.1577445}
   OverrideChangeTargetTimer: 0
   OverrideTargetIntensity: 0
   CustomSettings:
     LightIntensityRange:
-      x: 0
-      y: 0
+      x: -16.381153
+      y: 37.152035
     TargetIntensity: 0
     LightIntensityChangeSpeedRange:
       x: 0
-      y: 0
+      y: 113.528435
     LightIntensityChangeSpeed: 0
     LightIntensityChangeStep:
       x: 0
-      y: 0
-    SetColor: 0
+      y: 12.162316
+    SetColor: 1
     LerpToColor: 0
     ColorToSet:
       x: 0
-      y: 0
-      z: 0
-      w: 0
+      y: 0.10100526
+      z: 0.9716981
+      w: 0.5686275
     TimeRangeBeforeChangingTarget:
       x: 0
-      y: 0
-    ChangeTargetTimer: 0
+      y: 1.2023066
+    ChangeTargetTimer: 5.16
 --- !u!1 &1510366648
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,7 +1522,7 @@ MonoBehaviour:
       x: 0.5
       y: 0.5
     LightIntensityRange:
-      x: -27.173912
+      x: -21.184116
       y: 15
     LightIntensityChangeStep: 15
     LightIntensityChangeSpeed: 99
@@ -1535,7 +1535,7 @@ MonoBehaviour:
       w: 0
     TargetIntensity: 10
     TargetVolume: 1
-  LightIntensityRange: {x: -27.173912, y: 15}
+  LightIntensityRange: {x: -21.184116, y: 15}
   LightIntensityChangeStep: 15
   LightIntensityChangeSpeed: 99
   SetColor: 1
@@ -2486,7 +2486,7 @@ MonoBehaviour:
     LightIntensityRange:
       x: 19.753307
       y: 35.42528
-    LightIntensityChangeStep: 7.8
+    LightIntensityChangeStep: 10.3
     LightIntensityChangeSpeed: 8.43
     ChangeTargetTimer: 0.16
     SetColor: 1

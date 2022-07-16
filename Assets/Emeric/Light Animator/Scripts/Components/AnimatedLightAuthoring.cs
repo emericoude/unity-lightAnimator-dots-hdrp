@@ -1,12 +1,19 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEditor;
 using System;
+using UnityEditor;
 using Sirenix.OdinInspector;
 
 namespace Emeric.LightAnimator
 {
+    public enum ColorChangeMethods
+    {
+        Keep,
+        Set,
+        Lerp
+    }
+
     //[global::System.Runtime.CompilerServices.CompilerGenerated]
     [DisallowMultipleComponent]
     [Serializable]
@@ -35,12 +42,6 @@ namespace Emeric.LightAnimator
             InitialTimer = 64
         }
 
-        private enum ColorChangeMethods
-        {
-            Set,
-            Lerp
-        }
-
         [BoxGroup("Preset or custom?")]
         [EnumToggleButtons]
         [HideLabel]
@@ -63,16 +64,16 @@ namespace Emeric.LightAnimator
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
         [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.IntensityRange)")]
-        [LabelText("Intensity Range")]
-        [PropertyTooltip("This overrides the preset's light intensity range.\n\nThe light intensity target will be defined from this range and cannot go outside of this range.")]
+        [LabelText("@Constants.Label_LightIntensityRange")]
+        [PropertyTooltip("@Constants.Tooltip_LightIntensityRange")]
         [MinMaxSlider(-50f, 50f, true)]
         [SerializeField] private Vector2 OverrideLightIntensityRange;
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
         [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.IntensitySpeedRange)")]
-        [LabelText("Speed Range")]
-        [PropertyTooltip("This overrides the preset's light intensity change speed range.\n\nThe amount of light intensity that can change per second. Each time a new target intensity is assigned, a random speed value from this range is assigned.\n\nThe max value of this field equals to your intensity range in 0.1 second.")]
-        [MinMaxSlider(0f, "@this.LightIntensityRangeAbsolute() * 10", true)]
+        [LabelText("@Constants.Label_LightIntensitySpeedRange")]
+        [PropertyTooltip("@Constants.Tooltip_LightIntensitySpeedRange")]
+        [MinMaxSlider(0f, "@this.GetLightIntensityRange() * 10", true)]
         [SerializeField] private Vector2 OverrideLightIntensityChangeSpeedRange;
 
         [HideInInspector]
@@ -80,9 +81,9 @@ namespace Emeric.LightAnimator
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
         [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.IntensityStepRange)")]
-        [LabelText("Step Range")]
-        [PropertyTooltip("This overrides the preset's light intensity change step range.\n\nA step added to or substracted from the target intensity.\n\nEach time a new target intensity is assigned, a random step value from this range is assigned.\n\nThe max value of this field equals your intensity range.")]
-        [MinMaxSlider(0f, "@this.LightIntensityRangeAbsolute()", true)]
+        [LabelText("@Constants.Label_LightIntensityChangeStepRange")]
+        [PropertyTooltip("@Constants.Tooltip_LightIntensityChangeStepRange")]
+        [MinMaxSlider(0f, "@this.GetLightIntensityRange()", true)]
         [SerializeField] private Vector2 OverrideLightIntensityChangeStep;
 
         [HideInInspector]
@@ -90,28 +91,28 @@ namespace Emeric.LightAnimator
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
         [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.ColorChangeMethod)")]
-        [LabelText("Color Change Method")]
-        [PropertyTooltip("This overrides the preset's color change method.\n\nSet: Sets the color on update.\n\nLerp: Changes the color gradually.")]
+        [LabelText("@Constants.Label_ColorChangeMethod")]
+        [PropertyTooltip("@Constants.Tooltip_ColorChangeMethod")]
         [EnumToggleButtons]
         [SerializeField] private ColorChangeMethods OverrideLerpToColor;
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
-        [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.SetColor)")]
+        [ShowIf("@(this._settingOptions == SettingOptions.PresetWithOverride) && (this._overrides.HasFlag(PresetOverrideOptions.SetColor)) && (this.OverrideLerpToColor != ColorChangeMethods.Keep)")]
         [HideLabel]
-        [PropertyTooltip("This overrides the preset's color.\n\nThe color for the light to target.")]
+        [PropertyTooltip("@Constants.Tooltip_ColorToSet")]
         [SerializeField] private Color OverrideColorToSet = Color.white;
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
         [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.TimerRange)")]
-        [LabelText("Time Change Range")]
-        [PropertyTooltip("This overrides the preset's time range before chaning target.\n\nWhen this timer reaches 0, targets are changed.\n\nEach time a new target intensity is assigned, a random timer is assigned from this range.")]
+        [LabelText("@Constants.Label_TimerRange")]
+        [PropertyTooltip("@Constants.Tooltip_TimerRange")]
         [MinMaxSlider(0f, 2f, true)]
         [SerializeField] private Vector2 OverrideTimeRangeBeforeChangingTarget;
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
         [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.InitialTimer)")]
-        [LabelText("Initial Timer")]
-        [PropertyTooltip("This overrides the preset's initial timer.\n\nThe timer will be set to this value when the light is assigne this setting. Use this if you need lights with similar settings that need to alternate (e.g. police).")]
+        [LabelText("@Constants.Label_ChangeTargetTimer")]
+        [PropertyTooltip("@Constants.Tooltip_ChangeTargetTimer")]
         [SerializeField] private float OverrideChangeTargetTimer;
 
         [HideInInspector]
@@ -122,59 +123,9 @@ namespace Emeric.LightAnimator
 
         //Custom Settings
 
-        [BoxGroup("Custom Settings")]
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
+        //[BoxGroup("Custom Settings")]
+        [ShowIf("@this._settingOptions == SettingOptions.Custom")]
         public AnimatedLight CustomSettings;
-
-        /*
-        [BoxGroup("Custom Settings")]
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "LightIntensityRange.x", true)]
-        [RegisterBinding(typeof(AnimatedLight), "LightIntensityRange.y", true)]
-        public float2 LightIntensityRange;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "LightIntensityChangeSpeedRange.x", true)]
-        [RegisterBinding(typeof(AnimatedLight), "LightIntensityChangeSpeedRange.y", true)]
-        public float2 LightIntensityChangeSpeedRange;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "LightIntensityChangeSpeed")]
-        public float LightIntensityChangeSpeed;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "LightIntensityChangeStep.x", true)]
-        [RegisterBinding(typeof(AnimatedLight), "LightIntensityChangeStep.y", true)]
-        public float2 LightIntensityChangeStep;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "SetColor")]
-        public bool SetColor;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "LerpToColor")]
-        public bool LerpToColor;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "ColorToSet.x", true)]
-        [RegisterBinding(typeof(AnimatedLight), "ColorToSet.y", true)]
-        [RegisterBinding(typeof(AnimatedLight), "ColorToSet.z", true)]
-        [RegisterBinding(typeof(AnimatedLight), "ColorToSet.w", true)]
-        public float4 ColorToSet;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "TimeRangeBeforeChangingTarget.x", true)]
-        [RegisterBinding(typeof(AnimatedLight), "TimeRangeBeforeChangingTarget.y", true)]
-        public float2 TimeRangeBeforeChangingTarget;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "ChangeTargetTimer")]
-        public float ChangeTargetTimer;
-
-        [ShowIfGroup("Custom Settings/_settingOptions", SettingOptions.Custom)]
-        [RegisterBinding(typeof(AnimatedLight), "TargetIntensity")]
-        public float TargetIntensity;
-        */
 
         #endregion
 
@@ -196,9 +147,20 @@ namespace Emeric.LightAnimator
             __dstManager.AddComponentData(__entity, component);
         }
 
-        private float LightIntensityRangeAbsolute()
+        private float GetLightIntensityRange()
         {
-            return (Mathf.Abs(OverrideLightIntensityRange.x) + Mathf.Abs(OverrideLightIntensityRange.y));
+            float range;
+
+            if (_overrides.HasFlag(PresetOverrideOptions.IntensityRange))
+            {
+                range = OverrideLightIntensityRange.GetRange();
+            }
+            else
+            {
+                range = _preset.Settings.LightIntensityRange.GetRange();
+            }
+
+            return range;
         }
     }
 }
