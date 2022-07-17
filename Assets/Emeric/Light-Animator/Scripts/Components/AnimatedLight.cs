@@ -6,7 +6,9 @@ namespace Emeric.LightAnimator
 {
     //For more details, see my authoring component counterpart
     
-    //[GenerateAuthoringComponent]
+    /// <summary>
+    /// The ecs-component for an animated light state.
+    /// </summary>
     [Serializable]
     public struct AnimatedLight : IComponentData
     {

@@ -15,7 +15,10 @@ namespace Emeric.LightAnimator
         Lerp
     }
 
-    //[global::System.Runtime.CompilerServices.CompilerGenerated]
+    /// <summary>
+    /// Defines an animation state for an animated light.
+    /// </summary>
+    /// <remarks>This is the ecs-authoring component counterpart of the AnimatedLight script.</remarks>
     [DisallowMultipleComponent]
     [Serializable]
     public class AnimatedLightAuthoring : MonoBehaviour, IConvertGameObjectToEntity
@@ -81,7 +84,7 @@ namespace Emeric.LightAnimator
         [ShowIf("@this._settingOptions == SettingOptions.PresetWithOverride && this._overrides.HasFlag(PresetOverrideOptions.IntensityStepRange)")]
         [LabelText("@Constants.Label_LightIntensityChangeStepRange")]
         [PropertyTooltip("@Constants.Tooltip_LightIntensityChangeStepRange")]
-        [MinMaxSlider(0f, "@this.GetLightIntensityRange()", true)]
+        [MinMaxSlider(0f, "@this.GetLightIntensityRangeForOverride()", true)]
         [SerializeField] private Vector2 OverrideLightIntensityChangeStep;
 
         [BoxGroup("Select options to override/Overrides", centerLabel: true)]
@@ -218,7 +221,14 @@ namespace Emeric.LightAnimator
         #endregion
         #region Utilities
 
-        private float GetLightIntensityRange()
+        /// <remarks>Used by Odin Attributes</remarks>
+        /// <returns>
+        /// If this animated light is set to PresetWithOverride AND:<br/>
+        /// - and it is overriding the intensity range: The light intensity override's range; <br/>
+        /// - and if it is NOT override the intensity range: the preset's light intensity range; <br/><br/>
+        /// Otherwise: 0.
+        /// </returns>
+        private float GetLightIntensityRangeForOverride()
         {
             float range = 0;
 
@@ -237,12 +247,21 @@ namespace Emeric.LightAnimator
             return range;
         }
 
+        /// <returns>True if this animated light is set to PresetWithOverride AND has the color override enabled; otherwise, false.</returns>
         private bool CanDisplayColorOverride()
         {
             return _settingOptions == SettingOptions.PresetWithOverride && //If in OVERRIDE menu
                     _overrides.HasFlag(PresetOverrideOptions.Color); //If COLOR OVERRIDE toggled
         }
 
+        /// <remarks>Used by odin attributes to disable/enable the color field and display tooltips in cases where it would be useless to have this override.</remarks>
+        /// <returns>
+        /// True if it the color override can be displayed AND if: <br/>
+        /// - This animated light is overriding the color change method and the override is set to "Keep"; <br/>
+        /// OR <br/>
+        /// - This animated light is not overriding color change method and the preset's setColor is false; <br/><br/>
+        /// Otherwise, false.
+        /// </returns>
         private bool CanDisableColorOverride()
         {
             if (CanDisplayColorOverride())
