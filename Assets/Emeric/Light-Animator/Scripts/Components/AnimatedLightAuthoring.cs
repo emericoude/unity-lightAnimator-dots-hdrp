@@ -16,7 +16,7 @@ namespace Emeric.LightAnimator
     }
 
     /// <summary>
-    /// Defines an animation state for an animated light.
+    /// Defines the animation state that will be active on startup for an animated light.
     /// </summary>
     /// <remarks>This is the ecs-authoring component counterpart of the AnimatedLight script.</remarks>
     [DisallowMultipleComponent]
@@ -119,11 +119,13 @@ namespace Emeric.LightAnimator
         #endregion
         #region Custom Settings
 
-        //Custom Settings
-
-        //[BoxGroup("Custom Settings")]
         [ShowIf("@this._settingOptions == SettingOptions.Custom")]
         public AnimatedLight CustomSettings;
+
+        #endregion
+        #region Other Functionality
+
+        //[SerializeField] private bool DebugWithGizmos = false;
 
         private void OnValidate()
         {
@@ -134,6 +136,10 @@ namespace Emeric.LightAnimator
         #endregion
         #region Conversion
 
+        /// <summary>
+        /// ECS-related function that handles the convertion from Authoring to ecs-data. Logic called is based on this AnimatedLight's settings.
+        /// </summary>
+        /// <remarks>This is called by Unity at the proper time.</remarks>
         public void Convert(Entity __entity, EntityManager __dstManager, GameObjectConversionSystem __conversionSystem)
         {
             AnimatedLight component = default(AnimatedLight);
@@ -157,16 +163,31 @@ namespace Emeric.LightAnimator
             __dstManager.AddComponentData(__entity, component);
         }
 
+        /// <summary>
+        /// Logic called on convertion if the selected setting is "Custom". 
+        /// </summary>
+        /// <remarks>Copies the custom settings to the component.</remarks>
+        /// <param name="component">The component that will be converted to data.</param>
         private void ConvertFromCustom(ref AnimatedLight component)
         {
             component = CustomSettings;
         }
 
+        /// <summary>
+        /// Logic called on convertion if the selected setting is "Preset". 
+        /// </summary>
+        /// <remarks>Copies the preset's settings to the component.</remarks>
+        /// <param name="component">The component that will be converted to data.</param>
         private void ConvertFromPreset(ref AnimatedLight component)
         {
             component = _preset.Settings;
         }
 
+        /// <summary>
+        /// Logic called on convertion if the selected setting is "Preset With Override". 
+        /// </summary>
+        /// <remarks>Copies the preset's settings to the component. Then overrides any setting that should be overriden (based on options selected in inspector).</remarks>
+        /// <param name="component">The component that will be converted to data.</param>
         private void ConvertFromPresetWithOverride(ref AnimatedLight component)
         {
             ConvertFromPreset(ref component);

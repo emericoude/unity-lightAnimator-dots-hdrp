@@ -3,6 +3,10 @@ using Sirenix.OdinInspector;
 
 namespace Emeric.LightAnimator
 {
+    /// <summary>
+    /// Holds data for an animation state.
+    /// </summary>
+    /// <remarks>Presets are automatically added to the list of preset if possible.</remarks>
     [CreateAssetMenu(fileName = "New Light Animation Preset", menuName = "Scriptable Objects/Light Animator/Preset")]
     public class AnimatedLightPreset : ScriptableObject
     {
@@ -11,9 +15,12 @@ namespace Emeric.LightAnimator
 
         private void Awake()
         {
-            if (!AnimatedLightPresets.Instance.Presets.Contains(this))
+            if (AnimatedLightPresets.Instance != null)
             {
-                AnimatedLightPresets.Instance.AddPresetElement(this);
+                if (!AnimatedLightPresets.Instance.Presets.Contains(this))
+                {
+                    AnimatedLightPresets.Instance.AddPresetElement(this);
+                }
             }
         }
     }
